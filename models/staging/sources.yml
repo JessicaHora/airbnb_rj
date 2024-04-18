@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: air_rj
+    database: home
+    schema: airbnb
+    tables:
+      - name: bronze_reviews
+      - name: bronze_listings
+      - name: bronze_calendar

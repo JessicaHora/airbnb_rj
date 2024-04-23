@@ -1,0 +1,21 @@
+airbnb_rj:
+  target: local
+  outputs:
+    remote:
+      type: postgres
+      host: dpg-co6a0ka0si5c73cck8d0-a.oregon-postgres.render.com
+      user: ada
+      password: PR1gvstOECPAb8Yqat1OptlTPm2orbDC
+      port: 5432
+      dbname: database_vx82
+      schema: airbnb
+      threads: 4
+    local:
+      type: postgres
+      host: 192.168.18.87
+      user: postgres
+      password: l12345
+      port: 5432
+      dbname: home
+      schema: airbnb
+      threads: 4

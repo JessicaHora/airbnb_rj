@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: int__listings
+    description: >
+      This model clean the listings dataset.

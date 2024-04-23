@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: gold_mean_price_property_type
+    description: >
+      This model calculates the mean price of listings by property type.
+    tests:
+      - dbt_expectations.expect_table_columns_to_match_set:
+          column_list: ["media_preco", "listing_property_type"]
+  
+    columns:
+      - name: media_preco
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100_000
+          - dbt_expectations.expect_column_values_to_not_be_null
+
+     
+
+  - name: gold_mean_price_neighbourhood
+    description: >
+      This model calculates the mean price of listings by neighbourhood.
+    tests:
+      - dbt_expectations.expect_table_columns_to_match_set:
+          column_list: ["media_preco", "listing_neighbourhood"]
+
+    columns:
+      - name: media_preco
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100_000
+          - dbt_expectations.expect_column_values_to_not_be_null
+
+  - name: gold_mean_price_room_type
+    description: >
+      This model calculates the mean price of listings by room type.
+    tests:
+      - dbt_expectations.expect_table_columns_to_match_set:
+          column_list: ["media_preco", "listing_room_type"]
+    columns:
+      - name: media_preco
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100_000
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: listing_room_type
+        tests:
+          - dbt_expectations.expect_column_distinct_values_to_be_in_set:
+              value_set: ['Entire home/apt', 'Private room', 'Shared room', 'Hotel room']
+          - dbt_expectations.expect_column_values_to_not_be_null
+          - dbt_expectations.expect_column_values_to_be_unique

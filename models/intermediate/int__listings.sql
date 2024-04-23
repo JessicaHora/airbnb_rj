@@ -31,8 +31,8 @@ fill_null as (
         listing_host_verifications, -- TODO: parse this
         listing_host_has_profile_pic,
         listing_host_identity_verified,
-        listing_neighbourhood,
-        listing_neighbourhood_cleansed,
+        -- listing_neighbourhood,
+        listing_neighbourhood_cleansed as listing_neighbourhood,
         listing_latitude,
         listing_longitude,
         listing_property_type,
@@ -42,7 +42,7 @@ fill_null as (
         listing_bathrooms_text,
         coalesce(listing_beds, 1) as listing_beds, -- has nulls
         listing_amenities, -- TODO: parse this
-        listing_price,
+        REPLACE(REPLACE(listing_price, ',', ''), '$', '')::real as listing_price, 
         listing_minimum_nights
         listing_maximum_nights,
         listing_minimum_minimum_nights,
@@ -73,6 +73,8 @@ fill_null as (
         listing_review_scores_value
 
     from listings
+    where listing_price is not null
+    and listing_has_availability = 't'
 )
 
 select * from fill_null

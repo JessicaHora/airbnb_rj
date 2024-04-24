@@ -4,3 +4,34 @@ models:
   - name: int__listings
     description: >
       This model clean the listings dataset.
+    columns:
+      - name: listing_id
+        tests:
+          - unique
+          - not_null
+      - name: listing_url
+        tests:
+          - unique
+          - not_null
+
+  - name: int__reviews
+    description: >
+      This model clean the reviews dataset.
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: review_id
+        tests:
+          - unique
+          - not_null
+
+  - name: int__calendar
+    description: >
+      This model clean the calendar dataset.
+    columns:
+      - name: calendar_id
+        tests:
+          - unique
+          - not_null

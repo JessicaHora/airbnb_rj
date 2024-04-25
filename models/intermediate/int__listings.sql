@@ -10,7 +10,7 @@ fill_null as (
         listing_scrape_id,
         listing_last_scraped,
         listing_source,
-        listing_name,
+        {# listing_name, #}
         neighborhood_overview,
         listing_picture_url,
         listing_host_id,

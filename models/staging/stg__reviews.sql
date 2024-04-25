@@ -1,5 +1,5 @@
 with source as (
-      select * from {{ source('air_rj', 'bronze_reviews') }}
+      select * from {{ source('air_rj', 'reviews_bronze') }}
 ),
 renamed as (
     select

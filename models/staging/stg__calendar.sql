@@ -1,6 +1,6 @@
 with source as (
 
-    select * from {{ source('air_rj', 'bronze_calendar') }}
+    select * from {{ source('air_rj', 'calendar_bronze') }}
 
 ),
 

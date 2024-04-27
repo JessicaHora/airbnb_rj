@@ -3,7 +3,7 @@ version: 2
 models:
   - name: gold_mean_price_property_type
     description: >
-      This model calculates the mean price of listings by property type.
+      Este modelo calcula o preço médio das listagens por tipo de propriedade.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list: ['media_preco', 'listing_property_type']
@@ -18,7 +18,7 @@ models:
 
   - name: gold_mean_price_neighbourhood
     description: >
-      This model calculates the mean price of listings by neighbourhood.
+      Este modelo calcula o preço médio das listagens por bairro.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list: ['media_preco', 'listing_neighbourhood']
@@ -33,7 +33,7 @@ models:
 
   - name: gold_mean_price_room_type
     description: >
-      This model calculates the mean price of listings by room type.
+      Este modelo calcula o preço médio das listagens por tipo de quarto.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list: ['media_preco', 'listing_room_type']
@@ -54,7 +54,7 @@ models:
 
   - name: gold_mean_scores_host
     description: >
-      This model calculates the mean scores of hosts .
+      Este modelo calcula a média das pontuações dos anfitriões.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list:
@@ -73,7 +73,7 @@ models:
 
   - name: gold_count_property_host
     description: >
-      Este modelo calcula a contagem de imoveis por hosts .
+      Este modelo calcula a contagem de propriedades por anfitrião.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list:

@@ -1,37 +1,44 @@
-version: 2
-
 models:
   - name: int__listings
     description: >
-      This model clean the listings dataset.
+      Este modelo limpa o conjunto de dados de listagens.
     columns:
       - name: listing_id
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: bigint
       - name: listing_url
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: text
+      - name: listing_price
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: real
 
   - name: int__reviews
     description: >
-      This model clean the reviews dataset.
+      Este modelo limpa o conjunto de dados de avaliações.
     columns:
-      - name: id
-        tests:
-          - unique
-          - not_null
       - name: review_id
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: bigint
 
   - name: int__calendar
     description: >
-      This model clean the calendar dataset.
+      Este modelo limpa o conjunto de dados do calendário.
     columns:
       - name: calendar_id
         tests:
           - unique
           - not_null
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: bigint
+          - dbt_expectations.expect_column_values_to_be_increasing

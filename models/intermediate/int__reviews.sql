@@ -5,5 +5,10 @@ with reviews as (
 )
 
 select 
-    {{dbt_utils.star(from = ref('stg__reviews'))}}
+    review_id,
+    listing_id,
+    reviewer_id,
+    date,
+    reviewer_name,
+    comments
 from reviews

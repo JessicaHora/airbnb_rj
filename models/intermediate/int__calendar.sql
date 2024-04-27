@@ -4,6 +4,7 @@ with calendar as (
 ),
 final as (
     select 
+        row_number() over () as calendar_id,
         listing_id,
         date,
         available,

@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 
-uri = "postgresql://postgres:l12345@192.168.18.87/home"
+uri = "postgresql://postgres:lucas123@localhost/projeto_analytics"
 
 engine = create_engine(uri)
 
@@ -15,4 +15,4 @@ with engine.connect() as connection:
 files = os.listdir("data")
 
 for file in files:
-    pd.read_csv(f"data/{file}").to_sql('bronze_' + file.split(".")[0], engine, schema = 'airbnb', if_exists="replace", index=False)
+    pd.read_csv(f"data/{file}").to_sql( file.split(".")[0] + '_bronze', engine, schema = 'airbnb', if_exists="replace", index=False)

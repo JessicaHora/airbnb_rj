@@ -6,8 +6,8 @@ models:
       This model calculates the mean price of listings by property type.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
-          column_list: ["media_preco", "listing_property_type"]
-  
+          column_list: ['media_preco', 'listing_property_type']
+
     columns:
       - name: media_preco
         tests:
@@ -16,14 +16,12 @@ models:
               max_value: 100_000
           - dbt_expectations.expect_column_values_to_not_be_null
 
-     
-
   - name: gold_mean_price_neighbourhood
     description: >
       This model calculates the mean price of listings by neighbourhood.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
-          column_list: ["media_preco", "listing_neighbourhood"]
+          column_list: ['media_preco', 'listing_neighbourhood']
 
     columns:
       - name: media_preco
@@ -38,7 +36,7 @@ models:
       This model calculates the mean price of listings by room type.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
-          column_list: ["media_preco", "listing_room_type"]
+          column_list: ['media_preco', 'listing_room_type']
     columns:
       - name: media_preco
         tests:
@@ -49,6 +47,45 @@ models:
       - name: listing_room_type
         tests:
           - dbt_expectations.expect_column_distinct_values_to_be_in_set:
-              value_set: ['Entire home/apt', 'Private room', 'Shared room', 'Hotel room']
+              value_set:
+                ['Entire home/apt', 'Private room', 'Shared room', 'Hotel room']
+          - dbt_expectations.expect_column_values_to_not_be_null
+          - dbt_expectations.expect_column_values_to_be_unique
+
+  - name: gold_mean_scores_host
+    description: >
+      This model calculates the mean scores of hosts .
+    tests:
+      - dbt_expectations.expect_table_columns_to_match_set:
+          column_list:
+            ['listing_host_id', 'listing_host_name', 'media_avaliacao']
+    columns:
+      - name: media_avaliacao
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 5
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: listing_host_id
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+          - dbt_expectations.expect_column_values_to_be_unique
+
+  - name: gold_count_property_host
+    description: >
+      Este modelo calcula a contagem de imoveis por hosts .
+    tests:
+      - dbt_expectations.expect_table_columns_to_match_set:
+          column_list:
+            ['listing_host_id', 'listing_host_name', 'contagem_imoveis']
+    columns:
+      - name: contagem_imoveis
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 200
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: listing_host_id
+        tests:
           - dbt_expectations.expect_column_values_to_not_be_null
           - dbt_expectations.expect_column_values_to_be_unique

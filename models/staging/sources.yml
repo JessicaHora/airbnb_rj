@@ -2,9 +2,9 @@ version: 2
 
 sources:
   - name: air_rj
-    database: projeto_analytics
+    database: home
     schema: airbnb
     tables:
-      - name: reviews_bronze
-      - name: listings_bronze
-      - name: calendar_bronze
+      - name: bronze_reviews
+      - name: bronze_listings
+      - name: bronze_calendar

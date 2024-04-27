@@ -11,11 +11,11 @@ airbnb_rj:
       schema: airbnb
       threads: 4
     local:
-      type: postgres
-      host: localhost
-      user: postgres
-      password: lucas123
+      dbname: home
+      host: 192.168.18.87
+      pass: l12345
       port: 5432
-      dbname: projeto_analytics
       schema: airbnb
       threads: 4
+      type: postgres
+      user: postgres

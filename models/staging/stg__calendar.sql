@@ -9,7 +9,7 @@ renamed as (
     select
         row_number() over() as calendar_id,
         listing_id,
-        date,
+        date(date) as date,
         available,
         price,
         adjusted_price,

@@ -34,31 +34,6 @@ fill_null AS (
         listing_review_scores_value
     FROM listings
     WHERE listing_price IS NOT NULL
-),
-duplicated AS (
-    SELECT 
-        *,
-        ROW_NUMBER() OVER (PARTITION BY 
-        listing_host_id, 
-        listing_host_name, 
-        listing_number_of_reviews, 
-        listing_price, 
-        listing_first_review, 
-        listing_last_review, 
-        listing_property_type, 
-        listing_room_type, 
-        listing_accommodates, 
-        listing_bathrooms, 
-        num_baths, 
-        listing_number_of_reviews_ltm, 
-        listing_number_of_reviews_l30d  ORDER BY listing_id) AS row_num
-    FROM fill_null
 )
-SELECT 
-    f.*
-FROM 
-    fill_null f
-JOIN 
-    duplicated d ON f.listing_host_id = d.listing_host_id
-WHERE 
-    d.row_num = 1
+
+select * from fill_null

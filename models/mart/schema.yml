@@ -1,91 +1,123 @@
 version: 2
-
 models:
   - name: gold_mean_price_property_type
-    description: >
+    description: |
       Este modelo calcula o preço médio das listagens por tipo de propriedade.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
-          column_list: ['media_preco', 'listing_property_type']
-
+          column_list:
+            - media_preco
+            - listing_property_type
     columns:
+      - name: listing_property_type
+        description: Tipo de propriedade do anúncio
+        data_type: text
       - name: media_preco
+        data_type: double precision
+        description: Média de preço do anúncio
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 100_000
           - dbt_expectations.expect_column_values_to_not_be_null
-
   - name: gold_mean_price_neighbourhood
-    description: >
+    description: |
       Este modelo calcula o preço médio das listagens por bairro.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
-          column_list: ['media_preco', 'listing_neighbourhood']
-
+          column_list:
+            - media_preco
+            - listing_neighbourhood
     columns:
+      - name: listing_neighbourhood
+        description: Bairro do anúncio
+        data_type: text
       - name: media_preco
+        data_type: double precision
+        description: Média de preco do anúncio
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 100_000
           - dbt_expectations.expect_column_values_to_not_be_null
-
   - name: gold_mean_price_room_type
-    description: >
+    description: |
       Este modelo calcula o preço médio das listagens por tipo de quarto.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
-          column_list: ['media_preco', 'listing_room_type']
+          column_list:
+            - media_preco
+            - listing_room_type
     columns:
       - name: media_preco
+        description: Média de preço do anúncio
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 100_000
           - dbt_expectations.expect_column_values_to_not_be_null
       - name: listing_room_type
+        description: Tipo de quarto do anúncio
         tests:
           - dbt_expectations.expect_column_distinct_values_to_be_in_set:
               value_set:
-                ['Entire home/apt', 'Private room', 'Shared room', 'Hotel room']
-          - dbt_expectations.expect_column_values_to_not_be_null
+                - Entire home/apt
+                - Private room
+                - Shared room
+                - Hotel room
           - dbt_expectations.expect_column_values_to_be_unique
-
+          - dbt_expectations.expect_column_values_to_not_be_null
   - name: gold_mean_scores_host
-    description: >
+    description: |
       Este modelo calcula a média das pontuações dos anfitriões.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list:
-            ['listing_host_id', 'listing_host_name', 'media_avaliacao']
+            - listing_host_id
+            - listing_host_name
+            - media_avaliacao
     columns:
+      - name: listing_host_id
+        data_type: bigint
+        description: ID do anunciante
+        tests:
+          - dbt_expectations.expect_column_values_to_be_unique
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: listing_host_name
+        description: Nome do anunciante
+        data_type: text
       - name: media_avaliacao
+        data_type: double precision
+        description: Média da avaliaçao do anunciante
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 5
           - dbt_expectations.expect_column_values_to_not_be_null
-      - name: listing_host_id
-        tests:
-          - dbt_expectations.expect_column_values_to_not_be_null
-          - dbt_expectations.expect_column_values_to_be_unique
-
   - name: gold_count_property_host
-    description: >
+    description: |
       Este modelo calcula a contagem de propriedades por anfitrião.
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list:
-            ['listing_host_id', 'listing_host_name', 'contagem_imoveis']
+            - listing_host_id
+            - listing_host_name
+            - contagem_imoveis
     columns:
+      - name: listing_host_id
+        data_type: bigint
+        description: ID do anunciante
+        tests:
+          - dbt_expectations.expect_column_values_to_be_unique
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: listing_host_name
+        description: Nome do Anunciante
+        data_type: text
       - name: contagem_imoveis
+        data_type: bigint
+        description: Contagem de imóveis do anunciante
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 200
           - dbt_expectations.expect_column_values_to_not_be_null
-      - name: listing_host_id
-        tests:
-          - dbt_expectations.expect_column_values_to_not_be_null
-          - dbt_expectations.expect_column_values_to_be_unique

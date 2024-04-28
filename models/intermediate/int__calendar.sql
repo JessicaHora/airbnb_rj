@@ -1,18 +1,30 @@
-with calendar as (
-    select *
-    from {{ ref('stg__calendar') }}
+WITH calendar AS (
+    SELECT * FROM {{ ref('stg__calendar') }}
 ),
-final as (
-    select 
-        row_number() over () as calendar_id,
+deduplicated_calendar AS (
+    SELECT 
+        calendar_id,
         listing_id,
         date,
         available,
         price,
         adjusted_price,
         minimum_nights,
-        maximum_nights
-    from calendar
+        maximum_nights,
+        ROW_NUMBER() OVER (PARTITION BY listing_id, date ORDER BY calendar_id) AS row_num
+    FROM calendar
 )
 
-select * from final
+SELECT 
+    calendar_id,
+    listing_id,
+    date,
+    available,
+    price,
+    adjusted_price,
+    minimum_nights,
+    maximum_nights
+FROM 
+    deduplicated_calendar
+WHERE 
+    row_num = 1

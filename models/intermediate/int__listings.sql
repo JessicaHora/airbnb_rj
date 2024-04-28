@@ -1,79 +1,64 @@
-with listings as (
-
-    select * from {{ ref('stg__listings') }}
+WITH listings AS (
+    SELECT * FROM {{ ref('stg__listings') }}
 ),
-fill_null as (
-
-    select
+fill_null AS (
+    SELECT
         listing_id,
         listing_url,
-        -- listing_scrape_id,
-        -- listing_last_scraped,
-        -- listing_source,
-        -- listing_name,
-        -- neighborhood_overview,
-        -- listing_picture_url,
         listing_host_id,
-        -- listing_host_url,
         listing_host_name,
-        -- listing_host_since,
-        -- listing_host_location,
-        -- listing_host_about,
-        -- listing_host_response_time,
-        -- listing_host_response_rate,
-        -- listing_host_acceptance_rate,
-        -- listing_host_is_superhost,
-        -- listing_host_thumbnail_url,
-        -- listing_host_picture_url,
         listing_host_neighbourhood,
         listing_host_listings_count,
         listing_host_total_listings_count,
-        -- listing_host_verifications, -- TODO: parse this
-        -- listing_host_has_profile_pic,
-        -- listing_host_identity_verified,
-        -- listing_neighbourhood,
-        listing_neighbourhood_cleansed as listing_neighbourhood,
-        -- listing_latitude,
-        -- listing_longitude,
+        listing_neighbourhood_cleansed AS listing_neighbourhood,
         listing_property_type,
         listing_room_type,
         listing_accommodates,
-        coalesce(listing_bathrooms, 1) as listing_bathrooms,
-        regexp_substr(listing_bathrooms_text , '\d+(\.\d+)?') AS num_baths,
-        -- coalesce(listing_beds, 1) as listing_beds, -- has nulls
-        -- listing_amenities, -- TODO: parse this
-        REPLACE(REPLACE(listing_price, ',', ''), '$', '')::real as listing_price, 
-        listing_minimum_nights
+        COALESCE(listing_bathrooms, 1) AS listing_bathrooms,
+        REGEXP_SUBSTR(listing_bathrooms_text , '\d+(\.\d+)?') AS num_baths,
+        REPLACE(REPLACE(listing_price, ',', ''), '$', '')::REAL AS listing_price, 
+        listing_minimum_nights,
         listing_maximum_nights,
-        -- listing_minimum_minimum_nights,
-        -- listing_maximum_minimum_nights,
-        -- listing_minimum_maximum_nights,
-        -- listing_maximum_maximum_nights,
-        -- listing_minimum_nights_avg_ntm,
-        -- listing_maximum_nights_avg_ntm,
-        -- listing_calendar_updated,
         listing_has_availability,
-        -- listing_availability_30,
-        -- listing_availability_60,
-        -- listing_availability_90,
-        -- listing_availability_365,
-        -- listing_calendar_last_scraped,
         listing_number_of_reviews,
         listing_number_of_reviews_ltm,
         listing_number_of_reviews_l30d,
-        -- listing_first_review,
-        -- listing_last_review,
-        case when listing_first_review is null then 0 else 1 end as listing_has_reviews,
+        listing_first_review,
+        listing_last_review,
+        CASE WHEN listing_first_review IS NULL THEN 0 ELSE 1 END AS listing_has_reviews,
         listing_review_scores_rating,
-        -- listing_review_scores_accuracy,
         listing_review_scores_cleanliness,
         listing_review_scores_checkin,
         listing_review_scores_communication,
         listing_review_scores_location,
         listing_review_scores_value
-
-    from listings
-    where listing_price is not null
+    FROM listings
+    WHERE listing_price IS NOT NULL
+),
+duplicated AS (
+    SELECT 
+        *,
+        ROW_NUMBER() OVER (PARTITION BY 
+        listing_host_id, 
+        listing_host_name, 
+        listing_number_of_reviews, 
+        listing_price, 
+        listing_first_review, 
+        listing_last_review, 
+        listing_property_type, 
+        listing_room_type, 
+        listing_accommodates, 
+        listing_bathrooms, 
+        num_baths, 
+        listing_number_of_reviews_ltm, 
+        listing_number_of_reviews_l30d  ORDER BY listing_id) AS row_num
+    FROM fill_null
 )
-
-select * from fill_null
+SELECT 
+    f.*
+FROM 
+    fill_null f
+JOIN 
+    duplicated d ON f.listing_host_id = d.listing_host_id
+WHERE 
+    d.row_num = 1

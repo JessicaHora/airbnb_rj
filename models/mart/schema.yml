@@ -121,6 +121,56 @@ models:
               min_value: 0
               max_value: 200
           - dbt_expectations.expect_column_values_to_not_be_null
+  - name: gold_top_freq_reviewers
+    description: >
+      Este modelo indica quem foi o usuario com mais avaliações comentadas realizadas.
+    
+      
+    columns:
+      - name: count
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10000
+          - dbt_expectations.expect_column_values_to_not_be_null
+      
+      - name: reviewer_id
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+
+
+  - name: gold_mean_score_neighb
+    description: >
+      Este modelo calcula a média dos scores por bairro.
+    # pode ser nulo -- nenhum review ate o momento;
+
+
+
+  - name: gold_count_most_reviewed
+    description: >
+      Este modelo retorna os anuncios com mais comentários, em ordem decrescente.
+
+    columns:
+      - name: listing_id
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: count
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+
+
+  - name: gold_review_perfect_ratio
+    description: >
+      Retorna um ratio dos anuncions com comentários(reviews) calculado pelo número de reviews com a palavra perfect ou perfeito, pelo total de reviews, com um número mínimo de reviews >= 10.
+    
+    columns:
+      - name: percentage
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100
+      
+
   - name: gold_mean_price_copacabana_leblon_date
     description: >
       Este modelo calcula o preço médio das listagens por data e os bairros

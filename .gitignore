@@ -7,3 +7,4 @@ profiles.yml
 models/staging/
 .user.yml
 package-lock.yml
+.venv/

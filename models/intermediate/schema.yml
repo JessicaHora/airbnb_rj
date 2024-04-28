@@ -1,207 +1,176 @@
 version: 2
-
 models:
   - name: int__calendar
-    description: "Este conjunto de dados contém informações sobre a disponibilidade das propriedades ao longo do tempo. Ele lista as datas em que as propriedades estão disponíveis para reserva, bem como os preços para cada data"
+    description: Este conjunto de dados contém informações sobre a disponibilidade
+      das propriedades ao longo do tempo. Ele lista as datas em que as
+      propriedades estão disponíveis para reserva, bem como os preços para cada
+      data
     columns:
       - name: calendar_id
         data_type: bigint
-        description: "ID do período da lista de anúncios"
+        description: ID do período da lista de anúncios
         tests:
           - unique
           - not_null
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: bigint
           - dbt_expectations.expect_column_values_to_be_increasing
-
       - name: listing_id
         data_type: bigint
-        description: "ID do anúncio"        
-
+        description: ID do anúncio
       - name: date
         data_type: timestamp without time zone
-        description: "Data do período da lista de anúncios"
-
+        description: Data do período da lista de anúncios
       - name: available
         data_type: text
-        description: "Se o anúncio está disponível"
-
+        description: Se o anúncio está disponível
       - name: price
         data_type: text
-        description: "Preço do anúncio"
-
+        description: Preço do anúncio
       - name: adjusted_price
         data_type: double precision
-        description: "Preço do anúncio corrigido"
-
+        description: Preço do anúncio corrigido
       - name: minimum_nights
         data_type: double precision
-        description: "Noites minimas para o anúncio"
-
+        description: Noites minimas para o anúncio
       - name: maximum_nights
         data_type: double precision
-        description: "Noites maximas para o anúncio"
-
+        description: Noites maximas para o anúncio
   - name: int__listings
-    description: "Este conjunto de dados contém informações detalhadas sobre as propriedades listadas no Airbnb. Cada registro representa uma listagem individual e inclui informações como o tipo de propriedade, preço, localização, número de quartos, comodidades oferecidas e muito mais."
+    description: Este conjunto de dados contém informações detalhadas sobre as
+      propriedades listadas no Airbnb. Cada registro representa uma listagem
+      individual e inclui informações como o tipo de propriedade, preço,
+      localização, número de quartos, comodidades oferecidas e muito mais.
     columns:
       - name: listing_id
         data_type: bigint
-        description: "ID do anúncio"
+        description: ID do anúncio
         tests:
-          - unique
-          - not_null
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: bigint
-
+          - not_null
+          - unique
       - name: listing_url
         data_type: text
-        description: "Url do anúncio"
+        description: Url do anúncio
         tests:
-          - unique
-          - not_null
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: text
-
+          - not_null
+          - unique
       - name: listing_host_id
         data_type: bigint
-        description: "ID do dono do anúncio"
-
+        description: ID do dono do anúncio
       - name: listing_host_name
         data_type: text
-        description: "Nome do dono do anúncio"
-
+        description: Nome do dono do anúncio
       - name: listing_host_neighbourhood
         data_type: text
-        description: "Bairro do dono do anúncio"
-
+        description: Bairro do dono do anúncio
       - name: listing_host_listings_count
         data_type: double precision
-        description: "Número de anúncios do dono do anúncio"
-
+        description: Número de anúncios do dono do anúncio
       - name: listing_host_total_listings_count
         data_type: double precision
-        description: "Total de anúncios do dono do anúncio"
-
+        description: Total de anúncios do dono do anúncio
       - name: listing_neighbourhood
         data_type: text
-        description: "Beirro do anúncio"
-
+        description: Beirro do anúncio
       - name: listing_property_type
         data_type: text
-        description: "Tipo de propriedade do anúncio"
-
+        description: Tipo de propriedade do anúncio
       - name: listing_room_type
         data_type: text
-        description: "Tipo de quarto do anúncio"
-
+        description: Tipo de quarto do anúncio
       - name: listing_accommodates
         data_type: bigint
-        description: "Capacidade do anúncio"
-
+        description: Capacidade do anúncio
       - name: listing_bathrooms
         data_type: double precision
-        description: "Número de banheiros do anúncio"
-
+        description: Número de banheiros do anúncio
       - name: num_baths
         data_type: text
-        description: "Número de banheiros do anúncio"
-
-      - name: listing_amenities
-        data_type: text
-        description: "Lista de comodidades do anúncio"
-
+        description: Número de banheiros do anúncio
       - name: listing_price
         data_type: real
-        description: "Preço do anúncio"
+        description: Preço do anúncio
         tests:
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: real
-
-      - name: listing_maximum_nights
-        data_type: bigint
-        description: "Noites maximas para o anúncio"
-
       - name: listing_minimum_nights
         data_type: bigint
-        description: "Noites minimas para o anúncio"
-
+        description: Noites minimas para o anúncio
+      - name: listing_maximum_nights
+        data_type: bigint
+        description: Noites maximas para o anúncio
       - name: listing_has_availability
         data_type: text
-        description: "Se o anúncio tem disponibilidade"
-
+        description: Se o anúncio tem disponibilidade
       - name: listing_number_of_reviews
         data_type: bigint
-        description: "Número de avaliações do anúncio"
-
+        description: Número de avaliações do anúncio
       - name: listing_number_of_reviews_ltm
         data_type: bigint
-        description: "Número de anúncios últimos 12 meses"
-
+        description: Número de anúncios últimos 12 meses
       - name: listing_number_of_reviews_l30d
         data_type: bigint
-        description: "Número de anúncios ultimos 30 dias"
-
+        description: Número de anúncios ultimos 30 dias
+      - name: listing_first_review
+        description: Data da primeira avaliação do anúncio
+        data_type: timestamp without time zone
+      - name: listing_last_review
+        description: Data da última avaliação do anúncio
+        data_type: timestamp without time zone
       - name: listing_has_reviews
         data_type: integer
-        description: "Se o anúncio tem avaliações"
-
+        description: Se o anúncio tem avaliações
       - name: listing_review_scores_rating
         data_type: double precision
-        description: "Avaliação do anúncio"
         description: Avaliação do anúncio
         tests:
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: double precision
-
       - name: listing_review_scores_cleanliness
         data_type: double precision
-        description: "Avaliação do anúncio (limpeza)"
-
+        description: Avaliação do anúncio (limpeza)
       - name: listing_review_scores_checkin
         data_type: double precision
-        description: "Avaliamento do anúncio (checagem)"
-
+        description: Avaliamento do anúncio (checagem)
       - name: listing_review_scores_communication
         data_type: double precision
-        description: "Avaliamento do anúncio (comunicação)"
-
+        description: Avaliamento do anúncio (comunicação)
       - name: listing_review_scores_location
         data_type: double precision
-        description: "Avaliamento do anúncio (localização)"
-
+        description: Avaliamento do anúncio (localização)
       - name: listing_review_scores_value
         data_type: double precision
-        description: "Avaliamento do anúncio (valor)"
-
+        description: Avaliamento do anúncio (valor)
   - name: int__reviews
-    description: "O conjunto de dados de avaliações contém informações sobre as avaliações feitas por hóspedes que ficaram nas propriedades listadas. Ele inclui dados como a data da avaliação, o identificador da propriedade, os comentários escritos pelos hóspedes, e outras informações."
+    description: O conjunto de dados de avaliações contém informações sobre as
+      avaliações feitas por hóspedes que ficaram nas propriedades listadas. Ele
+      inclui dados como a data da avaliação, o identificador da propriedade, os
+      comentários escritos pelos hóspedes, e outras informações.
     columns:
       - name: review_id
         data_type: bigint
-        description: "ID da avaliação"
+        description: ID da avaliação
         tests:
           - unique
           - not_null
           - dbt_expectations.expect_column_values_to_be_of_type:
               column_type: bigint
-
       - name: listing_id
         data_type: bigint
-        description: "ID do anúncio"
-
+        description: ID do anúncio
       - name: reviewer_id
         data_type: bigint
-        description: "ID do cliente"
-
+        description: ID do cliente
       - name: date
         data_type: timestamp without time zone
-        description: "Data da avaliação"
-
+        description: Data da avaliação
       - name: reviewer_name
         data_type: text
-        description: "Nome do cliente"
-
+        description: Nome do cliente
       - name: comments
         data_type: text
-        description: "Comentários da avaliação"
+        description: Comentários da avaliação

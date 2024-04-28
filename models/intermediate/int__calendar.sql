@@ -7,7 +7,7 @@ deduplicated_calendar AS (
         listing_id,
         date,
         available,
-        price,
+        REPLACE(REPLACE(price, ',', ''), '$', '')::REAL AS listing_price, 
         adjusted_price,
         minimum_nights,
         maximum_nights,
@@ -20,7 +20,7 @@ SELECT
     listing_id,
     date,
     available,
-    price,
+    listing_price,
     adjusted_price,
     minimum_nights,
     maximum_nights

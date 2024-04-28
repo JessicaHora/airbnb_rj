@@ -121,3 +121,36 @@ models:
               min_value: 0
               max_value: 200
           - dbt_expectations.expect_column_values_to_not_be_null
+  - name: gold_mean_price_copacabana_leblon_date
+    description: >
+      Este modelo calcula o preço médio das listagens por data e os bairros
+      Copacabana e Lelbron.
+    tests:
+      - dbt_expectations.expect_table_columns_to_match_set:
+          column_list:
+            - date
+            - bairro
+            - media_preco
+    columns:
+      - name: date
+        description: Data
+        data_type: date
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: bairro
+        description: Bairro do anúncio
+        data_type: text
+        tests:
+          - dbt_expectations.expect_column_distinct_values_to_be_in_set:
+              value_set:
+                - Copacabana
+                - Leblon
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: media_preco
+        description: média de preço do bairro
+        data_type: double precision
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100_000
+          - dbt_expectations.expect_column_values_to_not_be_null

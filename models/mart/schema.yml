@@ -1,6 +1,25 @@
 version: 2
 
 models:
+  - name: gold_top_freq_reviewers
+    description: >
+      Este modelo indica quem foi o usuario com mais avaliações comentadas realizadas.
+    tests:
+      - dbt_expectations.expect_column_values_to_not_be_null
+    
+    columns:
+      - name: count
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10000
+
+
+
+
+
+
+#----  
   - name: gold_mean_price_property_type
     description: >
       Este modelo calcula o preço médio das listagens por tipo de propriedade.

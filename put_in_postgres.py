@@ -15,4 +15,10 @@ with engine.connect() as connection:
 files = os.listdir("data")
 
 for file in files:
-    pd.read_csv(f"data/{file}").to_sql('bronze_' + file.split(".")[0], engine, schema = 'airbnb', if_exists="replace", index=False)
+    pd.read_csv(f"data/{file}").to_sql(
+        "bronze_" + file.split(".")[0],
+        engine,
+        schema="airbnb",
+        if_exists="replace",
+        index=False,
+    )

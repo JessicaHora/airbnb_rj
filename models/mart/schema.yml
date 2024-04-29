@@ -123,54 +123,86 @@ models:
           - dbt_expectations.expect_column_values_to_not_be_null
   - name: gold_top_freq_reviewers
     description: >
-      Este modelo indica quem foi o usuario com mais avaliações comentadas realizadas.
-    
-      
+      Este modelo indica quem foi o usuario com mais avaliações comentadas
+      realizadas.
     columns:
+      - name: reviewer_id
+        data_type: bigint
+        description: Avaliador
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: reviewer_name
+        description: Nome do avaliador
+        data_type: text
       - name: count
+        data_type: bigint
+        description: contagem de avaliações
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 10000
           - dbt_expectations.expect_column_values_to_not_be_null
-      
-      - name: reviewer_id
-        tests:
-          - dbt_expectations.expect_column_values_to_not_be_null
-
-
   - name: gold_mean_score_neighb
-    description: >
+    description: |
       Este modelo calcula a média dos scores por bairro.
-    # pode ser nulo -- nenhum review ate o momento;
-
-
-
+    columns:
+      - name: listing_neighbourhood
+        description: Bairro
+        data_type: text
+      - name: isting_review_scores_rating
+        description: Média do score
+        data_type: numeric
+      - name: listing_review_scores_cleanliness
+        description: Média do score de limpeza
+        data_type: numeric
+      - name: listing_review_scores_checkin
+        description: Média do score de check-in
+        data_type: numeric
+      - name: listing_review_scores_communication
+        description: Média do score de comunicação
+        data_type: numeric
+      - name: listing_review_scores_location
+        description: Média do score de localização
+        data_type: numeric
+      - name: listing_review_scores_value
+        description: Média do score do valor
+        data_type: numeric
   - name: gold_count_most_reviewed
     description: >
       Este modelo retorna os anuncios com mais comentários, em ordem decrescente.
-
     columns:
       - name: listing_id
+        data_type: bigint
+        description: Id do anúncio
         tests:
           - dbt_expectations.expect_column_values_to_not_be_null
       - name: count
+        data_type: bigint
+        description: contagem de reviews do anúncio
         tests:
           - dbt_expectations.expect_column_values_to_not_be_null
-
-
   - name: gold_review_perfect_ratio
     description: >
-      Retorna um ratio dos anuncions com comentários(reviews) calculado pelo número de reviews com a palavra perfect ou perfeito, pelo total de reviews, com um número mínimo de reviews >= 10.
-    
+      Retorna um ratio dos anuncions com comentários(reviews) calculado pelo
+      número de reviews com a palavra perfect ou perfeito, pelo total de
+      reviews, com um número mínimo de reviews >= 10.
     columns:
+      - name: listing_id
+        description: Anúncio
+        data_type: bigint
+      - name: cnt_comment
+        description: Quantidade de comentários
+        data_type: bigint
+      - name: n_comments_w_perfect
+        description: Número de comentários com 'perfeito'
+        data_type: bigint
       - name: percentage
+        data_type: numeric
+        description: Porcentagem de comentários com perfeito
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 100
-      
-
   - name: gold_mean_price_copacabana_leblon_date
     description: >
       Este modelo calcula o preço médio das listagens por data e os bairros
@@ -212,3 +244,45 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 100_000
+
+  - name: gold_pct_total_copa_leb_ipa
+    description: Porcentagem do total para os 3 bairros
+    tests:
+      - dbt_expectations.expect_table_columns_to_match_set:
+          column_list:
+            - date
+            - pct_copacabana
+            - pct_leblon
+            - pct_ipanema
+    columns:
+      - name: date
+        description: Data
+        data_type: date
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+      - name: pct_copacabana
+        description: pct do preço em Copacabana
+        data_type: text
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: pct_leblon
+        description: pct do preço em Leblon
+        data_type: text
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      - name: pct_ipanema
+        description: Média do preço em Ipanema
+        data_type: text
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+      
+  

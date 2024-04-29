@@ -1,6 +1,6 @@
 with TBL as (
     select listing_id, count(comments) as cnt_comment
-    from airbnb.int__reviews
+    from {{ ref('int__reviews') }}
     group by listing_id
 ),
 
@@ -9,7 +9,7 @@ select
 	ir.listing_id, 
 	TBL.cnt_comment,
 	count(*) as "n_comments_w_perfect"
-from airbnb.int__reviews ir
+from {{ ref('int__reviews') }} ir
 join TBL on ir.listing_id = TBL.listing_id 
 where 
 ir.comments ilike '%perfect%' or ir.comments ilike '%perfeito%'

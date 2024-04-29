@@ -179,28 +179,36 @@ models:
       - dbt_expectations.expect_table_columns_to_match_set:
           column_list:
             - date
-            - bairro
-            - media_preco
+            - media_copacabana
+            - media_leblon
+            - media_ipanema
     columns:
       - name: date
         description: Data
         data_type: date
         tests:
           - dbt_expectations.expect_column_values_to_not_be_null
-      - name: bairro
-        description: Bairro do anúncio
+      - name: media_copacabana
+        description: Media do preço em Copacabana
         data_type: text
         tests:
-          - dbt_expectations.expect_column_distinct_values_to_be_in_set:
-              value_set:
-                - Copacabana
-                - Leblon
           - dbt_expectations.expect_column_values_to_not_be_null
-      - name: media_preco
-        description: média de preço do bairro
-        data_type: double precision
-        tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 100_000
+      - name: media_leblon
+        description: Media do preço em Leblon
+        data_type: text
+        tests:
           - dbt_expectations.expect_column_values_to_not_be_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100_000
+      - name: media_ipanema
+        description: Média do preço em Ipanema
+        data_type: text
+        tests:
+          - dbt_expectations.expect_column_values_to_not_be_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100_000
